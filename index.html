@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <link rel="stylesheet" href="./main.css">
+
+</head>
+<body ng-app="myApp">
+  <div class="main">
+    <div class="content">
+        <div class="main-title">
+            <h1>Tiệm Cafe</h1>
+            <div class="outer-circle">
+                <div class="card">
+                  <div >
+                    <form class="maincontent" name="myForm">
+                      <div ng-controller="MathController">
+                        
+                        <h3>Không ngon cũng lấy tiền</h3>
+                        <div>
+                          <table>
+                            <thead>
+                            <tr>
+                              <th>Đồ Uống</th>
+                              <th>Size</th>
+                              <th>Số Lượng</th>
+                              <th>Giá</th>
+                              <th>Thanh Toán</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                              <td><select ng-options="dependant for dependant in dependants" ng-model="selectedD" ng-init = "true"></select></td>
+                              <td><select ng-options="gender for gender in genders" ng-model="selectedG" ng-init="selectedG = true" ></select></td>
+                              <td><input name="input" class="quantity" type="number" min="1"  ng-model="quantity" required/></td>
+                              <td>{{price}} VND</td>
+                              <td>{{subTotal()}} VND</td>
+                            </tr>
+                  
+                            </tbody>
+                  
+                          </table>
+                        </div>
+                  
+                        <div ng-switch on="selectedD">
+                          <div ng-switch-when="Nâu Đá"></div>
+                          <div ng-switch-when="Đen Đá"></div>
+                          <div ng-switch-when="Bạc Xỉu"></div>
+                        </div>
+                        <div ng-switch on="selectedG">
+                          <div ng-switch-when="M"></div>
+                          <div ng-switch-when="L"></div>
+                        </div>
+                        <p ng-show="myForm.input.$invalid" style="color: red">Fill the Quantity</p>
+                        <p> Thuế VAT: {{Tax()}} VND</p>
+                        <p> Tổng Thanh Toán: {{total()}} VND</p>
+                      </div>
+                    </form>
+                  
+                  </div>
+                  
+                  <script>
+                    var app = angular.module('myApp', []);
+                  
+                    app.controller('MathController', function($scope) {
+                      $scope.price = 0;
+                      $scope.quantity = '';
+                      $scope.genders = ['L' , 'M'];
+                      $scope.selectedG = $scope.genders[0];
+                      $scope.dependants = ['Nâu Đá', 'Đen Đá', 'Bạc Xỉu'];
+                      $scope.selectedD = $scope.dependants[0];
+                  
+                      $scope.subTotal = function() {
+                  
+                        return (Number($scope.quantity) * (Number($scope.price)));
+                      }
+                  
+                      $scope.Tax = function() {
+                  
+                        if ($scope.selectedG == "L") {
+                          switch($scope.selectedD) {
+                            case "Nâu Đá": $scope.price = 25000;
+                              break;
+                            case "Đen Đá": $scope.price = 20000;
+                              break;
+                            case "Bạc Xỉu": $scope.price = 30000;
+                              break;
+                          }
+                        } else {
+                          switch($scope.selectedD) {
+                            case "Nâu Đá": $scope.price = 23000;
+                              break;
+                            case "Đen Đá": $scope.price = 18000;
+                              break;
+                            case "Bạc Xỉu": $scope.price = 25000;
+                              break;
+                          }
+                        }
+                        return (Number($scope.quantity) * (Number($scope.price) * 0.1))
+                  
+                      }
+                      $scope.total = function(){
+                        return (Number($scope.quantity) * (Number($scope.price))) + (Number($scope.quantity) * (Number($scope.price) * 0.1));
+                      }
+                    });
+                  
+                  
+                  </script>
+                </div>
+
+            </div>
+           
+        </div>
+    </div>
+<div >
+
+
+</body>
+</html>
